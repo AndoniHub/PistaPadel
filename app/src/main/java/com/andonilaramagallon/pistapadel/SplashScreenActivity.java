@@ -1,4 +1,4 @@
-package lara.andoni.pistapadel;
+package com.andonilaramagallon.pistapadel;
 
 import android.content.Intent;
 import android.os.Bundle;

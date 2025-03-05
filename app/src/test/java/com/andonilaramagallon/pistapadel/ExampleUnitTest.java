@@ -1,4 +1,4 @@
-package lara.andoni.pistapadel;
+package com.andonilaramagallon.pistapadel;
 
 import org.junit.Test;
 
