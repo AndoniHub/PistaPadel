@@ -31,7 +31,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // Arrancamos la siguiente actividad
-                Intent mainIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                Intent mainIntent = new Intent(SplashScreenActivity.this, AuthActivity.class);
                 startActivity(mainIntent);
                 // Cerramos esta actividad para que el usuario no pueda volver a ella mediante botón de volver atrás
                 finish();

@@ -54,4 +54,5 @@ dependencies {
     // Importar Firebase con Version Catalog, reemplazando la dependencia por la referencia a libs
     implementation platform(libs.firebase.bom)
     implementation libs.firebase.analytics
+    implementation libs.firebase.auth
 }

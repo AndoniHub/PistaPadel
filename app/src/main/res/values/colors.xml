@@ -7,4 +7,19 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Paleta de colores corporativos de la aplicación -->
+    <color name="blue_01">#3389F1</color>
+    <color name="blue_02">#073163</color>
+    <color name="blue_03">#FFFFFFFF</color>
+
+    <color name="green_01">#9BD11B</color>
+    <color name="green_02">#FFFFFFFF</color>
+    <color name="green_03">#FFFFFFFF</color>
+
+    <color name="red_01">#ED5355</color>
+
+    <color name="background_01">#E5F3FA</color>
+
+
 </resources>
