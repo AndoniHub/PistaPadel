@@ -69,6 +69,20 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     /**
+     * Metodo que se ejecuta cada que que la activity vuelve a estar en primer plano.
+     * Vuelve a poner los valores de los editText de email y contraseña vacíos.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EditText emailEditText = findViewById(R.id.emailEditText);
+        EditText passwordEditText = findViewById(R.id.passwordEditText);
+        // Limpiar los campos de email y contraseña
+        emailEditText.setText("");
+        passwordEditText.setText("");
+    }
+
+    /**
      * Metodo que define la acción al pulsar el botón Registrar.
      * Obtiene y verifica que los campos email y contraseña no estén vacíos y sean válidos.
      * Mediante el servicio FirebaseAuth, registra el usuario con las credenciales obtenidas y accede a la HomeActivity.
@@ -84,21 +98,20 @@ public class AuthActivity extends AppCompatActivity {
             // Obtener el valor de los campos EditText de email y contraseña
             String email = emailEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
-
-            // Validar los campos de email y contraseña
+            // Validaciones de los campos de email y contraseña
             if (email.isEmpty()) {
                 mostrarAlerta("Debe introducir una dirección de email");
                 return;
             }
-
             if (password.isEmpty()) {
                 mostrarAlerta("Debe introducir una contraseña válida");
                 return;
             }
-
             // Verificar que la contraseña tenga un mínimo de 6 caracteres (requisito de Firebase)
             if (password.length() < 6) {
                 mostrarAlerta("La contraseña debe tener al menos 6 caracteres");
+                // Limpiar el campo de contraseña
+                passwordEditText.setText("");
                 return;
             }
 
@@ -116,14 +129,19 @@ public class AuthActivity extends AppCompatActivity {
                                 FirebaseAuthException e = (FirebaseAuthException) task.getException();
                                 String errorCode = e.getErrorCode();
 
-                                // TODO: No consigo controlar que solo se muestren los mensajes de error definidos por mi. Se muestra el mensaje definido por Firebase + el mensaje personalizado
                                 // Personalizar el mensaje de error según el código de error
                                 switch (errorCode) {
                                     case "ERROR_EMAIL_ALREADY_IN_USE":
-                                        mostrarAlerta("Ya existe un usuario registrado con esta dirección de correo.");
+                                        mostrarAlerta("Ya existe un usuario registrado con la dirección de correo electrónico " + email);
+                                        // Limpiar los campos de email y contraseña
+                                        passwordEditText.setText("");
+                                        passwordEditText.setText("");
                                         break;
                                     case "ERROR_INVALID_EMAIL":
                                         mostrarAlerta("El formato del correo electrónico no es válido.");
+                                        // Limpiar los campos de email y contraseña
+                                        emailEditText.setText("");
+                                        passwordEditText.setText("");
                                         break;
                                     default:
                                         mostrarAlerta("Error al registrar usuario. Por favor inténtelo de nuevo.");
@@ -152,23 +170,38 @@ public class AuthActivity extends AppCompatActivity {
             String email = emailEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
 
-            // Validar que los campos no estén vacíos
-            if (!email.isEmpty() && !password.isEmpty()) {
-                // Obtener una instancia de FirebaseAuth y llamar al metodo signInWithEmailAndPassword para acceder mediante email y contraseña
-                FirebaseAuth.getInstance()
-                        .signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                String userEmail = (task.getResult().getUser() != null) ? task.getResult().getUser().getEmail() : "";
-                                // Llamada al metodo mostrarHme para navegar a HomeActivity
-                                mostrarHome(userEmail, ProviderType.BASIC);
-                            } else {
-                                mostrarAlerta("El coreo o la contraseña no coinciden con las de un usuario registrado");
-                            }
-                        });
-            } else {
-                mostrarAlerta("Debe introducir un email y contraseña validos");
+            // Validaciones de los campos de email y contraseña
+            if (email.isEmpty()) {
+                mostrarAlerta("Debe introducir una dirección de email");
+                return;
             }
+            if (password.isEmpty()) {
+                mostrarAlerta("Debe introducir una contraseña válida");
+                return;
+            }
+            // Verificar que la contraseña tenga un mínimo de 6 caracteres (requisito de Firebase)
+            if (password.length() < 6) {
+                mostrarAlerta("La contraseña debe tener al menos 6 caracteres");
+                // Limpiar el campo de contraseña
+                passwordEditText.setText("");
+                return;
+            }
+
+            // Obtener una instancia de FirebaseAuth y llamar al metodo signInWithEmailAndPassword para acceder mediante email y contraseña
+            FirebaseAuth.getInstance()
+                    .signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            String userEmail = (task.getResult().getUser() != null) ? task.getResult().getUser().getEmail() : "";
+                            // Llamada al metodo mostrarHme para navegar a HomeActivity
+                            mostrarHome(userEmail, ProviderType.BASIC);
+                        } else {
+                            mostrarAlerta("La dirección de correo electrónico o la contraseña no coinciden con las de un usuario registrado. Por favor, inténtelo de nuevo.");
+                            // Limpiar los campos de email y contraseña
+                            emailEditText.setText("");
+                            passwordEditText.setText("");
+                        }
+                    });
         });
     }
 
