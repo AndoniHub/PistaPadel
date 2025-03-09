@@ -8,8 +8,6 @@
     android:background="@color/background_01"
     tools:context=".HomeActivity">
 
-
-
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -26,7 +24,7 @@
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TITULO"
+            android:text="Home"
             android:textColor="@color/blue_02"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -55,6 +53,72 @@
             android:layout_width="match_parent"
             android:layout_height="8dp" />
 
+        <EditText
+            android:id="@+id/nameEditTextView"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:text="Nombre" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
+
+        <EditText
+            android:id="@+id/surNameEditTextView"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:text="Apellidos" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
+
+        <EditText
+            android:id="@+id/phoneEditTextView"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:text="Teléfono" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
+
+        <Button
+            android:id="@+id/saveInfoButton"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="Guardar información"
+            app:backgroundTint="@color/green_01" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
+
+        <Button
+            android:id="@+id/getInfoButton"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="Recuperar información"
+            app:backgroundTint="@color/green_01" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
+
+        <Button
+            android:id="@+id/deleteInfoButton"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="Eliminar información"
+            app:backgroundTint="@color/green_01" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
+
         <Button
             android:id="@+id/signOutButton"
             android:layout_width="300dp"
@@ -63,13 +127,5 @@
             android:text="Cerrar sesión"
             app:backgroundTint="@color/red_01" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-        </LinearLayout>
-
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
