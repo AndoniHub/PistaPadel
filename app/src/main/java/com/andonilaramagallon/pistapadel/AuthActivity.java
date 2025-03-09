@@ -201,7 +201,7 @@ public class AuthActivity extends AppCompatActivity {
                             // Mostrar mensaje toast
                             Toast.makeText(this, "Ha accedido a la aplicación con éxito", Toast.LENGTH_SHORT).show();
                             // Navegar a HomeActivity
-                            mostrarHome(userEmail, ProviderType.BASIC);
+                            mostrarHome(userEmail);
                         } else {
                             mostrarPopup("Error", "La dirección de correo electrónico o la contraseña no coinciden con las de un usuario registrado.\nPor favor, inténtelo de nuevo.");
                             // Limpiar los campos de email y contraseña
@@ -270,15 +270,13 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     /**
-     * Metodo que crea un Intent para navegar a la HomeActivity y enviar como datos el email y provider del usuario
+     * Metodo que crea un Intent para navegar a la HomeActivity y enviar como datos el email
      *
      * @param email    Email del usuario
-     * @param provider Provider del usuario
      */
-    private void mostrarHome(String email, ProviderType provider) {
+    private void mostrarHome(String email) {
         Intent homeIntent = new Intent(AuthActivity.this, HomeActivity.class);
         homeIntent.putExtra("email", email);
-        homeIntent.putExtra("provider", provider.name());
         startActivity(homeIntent);
     }
 }

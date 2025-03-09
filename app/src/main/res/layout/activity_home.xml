@@ -43,21 +43,11 @@
             android:layout_width="match_parent"
             android:layout_height="8dp" />
 
-        <TextView
-            android:id="@+id/providerTextView"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="Proveedor" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="8dp" />
-
         <EditText
             android:id="@+id/nameEditTextView"
             android:layout_width="300dp"
             android:layout_height="50dp"
-            android:text="Nombre" />
+            android:hint="Nombre" />
 
         <Space
             android:layout_width="match_parent"
@@ -67,7 +57,7 @@
             android:id="@+id/surNameEditTextView"
             android:layout_width="300dp"
             android:layout_height="50dp"
-            android:text="Apellidos" />
+            android:hint="Apellidos" />
 
         <Space
             android:layout_width="match_parent"
@@ -77,7 +67,7 @@
             android:id="@+id/phoneEditTextView"
             android:layout_width="300dp"
             android:layout_height="50dp"
-            android:text="Teléfono" />
+            android:hint="Teléfono" />
 
         <Space
             android:layout_width="match_parent"

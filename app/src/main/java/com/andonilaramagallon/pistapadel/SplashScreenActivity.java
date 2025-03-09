@@ -27,15 +27,12 @@ public class SplashScreenActivity extends AppCompatActivity {
         });
 
         // Usamos un Handler para esperar un cierto tiempo y luego iniciar la nueva actividad
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Arrancamos la siguiente actividad
-                Intent mainIntent = new Intent(SplashScreenActivity.this, AuthActivity.class);
-                startActivity(mainIntent);
-                // Cerramos esta actividad para que el usuario no pueda volver a ella mediante botón de volver atrás
-                finish();
-            }
-        }, 3000); // Tiempo de espera en milisegundos
+        new Handler().postDelayed(() -> {
+            // Arrancamos la siguiente actividad
+            Intent mainIntent = new Intent(SplashScreenActivity.this, AuthActivity.class);
+            startActivity(mainIntent);
+            // Cerramos esta actividad para que el usuario no pueda volver a ella mediante botón de volver atrás
+            finish();
+        }, 1000); // Tiempo de espera en milisegundos
     }
 }

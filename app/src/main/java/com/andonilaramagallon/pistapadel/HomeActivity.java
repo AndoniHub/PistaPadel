@@ -21,7 +21,7 @@ import java.util.Map;
 public class HomeActivity extends AppCompatActivity {
 
     // Atributos de la clase
-    private static final FirebaseFirestore  db = FirebaseFirestore.getInstance(); // Instancia de conexión a la BD
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,34 +34,33 @@ public class HomeActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Variables para almacenar los valores obtenidos desde el intent
-        // Se inicializan con valores por defecto
-        String email = "";
-        String provider = "BASIC";
-
         // Instanciar Bundle asignando valores obtenidos del intent
-        Bundle bundle = getIntent().getExtras();
+        //Bundle bundle = getIntent().getExtras();
 
-        // Asignar los valores a las variables en caso de que el Bundle no sea null
-        if (bundle != null) {
-            email = bundle.getString("email");
-            provider = bundle.getString("provider");
+        // Obtener el email del intent
+        String email = getIntent().getStringExtra("email");
+
+        // Verificar que el email no sea nulo para evitar errores
+        if (email == null) {
+            email = "";
         }
 
+        // Instanciar la conexión a la BD FirebaseFirestore
+        db = FirebaseFirestore.getInstance();
+
         // Llamadas a los métodos de la clase
-        setup(email, provider);
+        setup(email);
         logOutSession();
     }
 
     /**
-     * Metodo para configurar e iniciar correctamente la actividad, obteniendo y mostrando en el layout los valores de email y provider del usuario.
+     * Metodo para configurar e iniciar correctamente la actividad, obteniendo y mostrando en el layout el valor de email del usuario
+     *
      * @param email Email del usuario
-     * @param provider Provider del usuario
      */
-    private void setup(String email, String provider) {
+    private void setup(String email) {
         // Instanciar los elementos del layout
         TextView emailTextView = findViewById(R.id.emailTextView);
-        TextView providerTextView = findViewById(R.id.providerTextView);
         Button saveInfoButton = findViewById((R.id.saveInfoButton));
         Button getInfoButton = findViewById((R.id.getInfoButton));
         Button deleteInfoButton = findViewById((R.id.deleteInfoButton));
@@ -69,9 +68,8 @@ public class HomeActivity extends AppCompatActivity {
         EditText surNameEditTextView = findViewById((R.id.surNameEditTextView));
         EditText phoneEditTextView = findViewById((R.id.phoneEditTextView));
 
-        // Mostrar los valores de email y provider en el layout
+        // Mostrar los valor del email en el layout
         emailTextView.setText(email);
-        providerTextView.setText(provider);
 
         // Listener para el botón saveInfoButton
         saveInfoButton.setOnClickListener(v -> {
@@ -82,7 +80,6 @@ public class HomeActivity extends AppCompatActivity {
 
             // Crear un HashMap con los datos del usuario
             Map<String, Object> userData = new HashMap<>();
-            userData.put("provider", provider);
             userData.put("name", name);
             userData.put("surname", surname);
             userData.put("phone", phone);
