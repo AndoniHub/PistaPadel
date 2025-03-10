@@ -50,7 +50,6 @@ public class HomeActivity extends AppCompatActivity {
 
         // Llamadas a los métodos de la clase
         setup(email);
-        logOutSession();
     }
 
     /**
@@ -64,24 +63,25 @@ public class HomeActivity extends AppCompatActivity {
         Button saveInfoButton = findViewById((R.id.saveInfoButton));
         Button getInfoButton = findViewById((R.id.getInfoButton));
         Button deleteInfoButton = findViewById((R.id.deleteInfoButton));
+        Button signOutButton = findViewById(R.id.signOutButton);
         EditText nameEditTextView = findViewById((R.id.nameEditTextView));
-        EditText surNameEditTextView = findViewById((R.id.surNameEditTextView));
+        EditText surnamesEditTextView = findViewById((R.id.surnamesEditTextView));
         EditText phoneEditTextView = findViewById((R.id.phoneEditTextView));
 
         // Mostrar los valor del email en el layout
         emailTextView.setText(email);
 
-        // Listener para el botón saveInfoButton
+        // OnClickListener para el botón saveInfoButton
         saveInfoButton.setOnClickListener(v -> {
             // Obtener los valores ingresados por el usuario en los editText
             String name = nameEditTextView.getText().toString().trim();
-            String surname = surNameEditTextView.getText().toString().trim();
+            String surnames = surnamesEditTextView.getText().toString().trim();
             String phone = phoneEditTextView.getText().toString().trim();
 
             // Crear un HashMap con los datos del usuario
             Map<String, Object> userData = new HashMap<>();
             userData.put("name", name);
-            userData.put("surname", surname);
+            userData.put("surnames", surnames);
             userData.put("phone", phone);
 
             // Guardar los datos en Firestore -> Sirve tanto para guardar o actualizar los datos si ya existían previamente en la BD
@@ -91,7 +91,7 @@ public class HomeActivity extends AppCompatActivity {
                     .addOnFailureListener(e -> mostrarPopup("Error", "Error al guardar los datos: " + e.getMessage()));
         });
 
-        // Listener para el botón getInfoButton -> Obtiene los datos del documento con key = email
+        // OnClickListener para el botón getInfoButton -> Obtiene los datos del documento con key = email
         getInfoButton.setOnClickListener(v -> {
             db.collection("users").document(email)
                     .get()
@@ -99,12 +99,12 @@ public class HomeActivity extends AppCompatActivity {
                         if (task.isSuccessful() && task.getResult() != null) {
                             // Obtener los valores del documento
                             String name = task.getResult().getString("name");
-                            String surname = task.getResult().getString("surname");
+                            String surname = task.getResult().getString("surnames");
                             String phone = task.getResult().getString("phone");
 
                             // Mostrar los valores en los EditText
                             nameEditTextView.setText(name != null ? name : "");
-                            surNameEditTextView.setText(surname != null ? surname : "");
+                            surnamesEditTextView.setText(surname != null ? surname : "");
                             phoneEditTextView.setText(phone != null ? phone : "");
                         } else {
                             mostrarPopup("Error", "Error al obtener los datos");
@@ -113,30 +113,28 @@ public class HomeActivity extends AppCompatActivity {
                     .addOnFailureListener(e -> mostrarPopup("Error", "Error: " + e.getMessage()));
         });
 
-        // Listener para el botón deleteInfoButton -> Elimina todos los datos del documento con key = email
+        // OnClickListener para el botón deleteInfoButton -> Elimina todos los datos del documento con key = email
         deleteInfoButton.setOnClickListener(v -> {
             db.collection("users").document(email).delete();
         });
+
+        // OnClickListener para el botón Cerrar sesión
+        signOutButton.setOnClickListener(v -> signOutSession());
     }
 
     /**
-     * Metodo para definir la acción del metodo Cerrar Sesión.
      * Cierra la sesión del usuario conectado mediante el metodo signOut del servicio FirebaseAuth.
+     * Finaliza la actividad y vuelve a la anterior.
      */
-    private void logOutSession() {
-        Button signOutButton = findViewById(R.id.signOutButton);
+    private void signOutSession() {
+        // Obtener una instancia de FirebaseAuth y llamar al metodo signOut para cerrar la sesión
+        FirebaseAuth.getInstance().signOut();
 
-        signOutButton.setOnClickListener(v -> {
-            // Obtener una instancia de FirebaseAuth y llamar al metodo signOut para cerrar la sesión
-            FirebaseAuth.getInstance().signOut();
+        //TODO: Queda pendiente borrar este método comentado deprecado.
+        // Mirar el tema de la navegación entre fragmentos, mediante el archivo res/navigation/nav_graph.xml
+        //onBackPressed();
 
-            //TODO: Queda pendiente borrar este método comentado deprecado.
-            // Mirar el tema de la navegación entre fragmentos, mediante el archivo res/navigation/nav_graph.xml
-            //onBackPressed();
-
-            // Terminar la actividad actual y volver a la anterior
-            finish();
-        });
+        finish(); // Finalizar la actividad actual y volver a la anterior
     }
 
     /**

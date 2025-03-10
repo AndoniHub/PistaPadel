@@ -18,7 +18,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
 
 public class AuthActivity extends AppCompatActivity {
 
@@ -71,7 +70,7 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     /**
-     * Metodo que se ejecuta cada que que la activity vuelve a estar en primer plano.
+     * Se ejecuta cada que que la activity vuelve a estar en primer plano.
      * Vuelve a poner los valores de los editText de email y contraseña vacíos.
      */
     @Override
@@ -85,82 +84,21 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     /**
-     * Metodo que define la acción al pulsar el botón Registrar.
-     * Obtiene y verifica que los campos email y contraseña no estén vacíos y sean válidos.
-     * Mediante el servicio FirebaseAuth, registra el usuario con las credenciales obtenidas y accede a la HomeActivity.
+     * Define la acción al pulsar el botón Registrarse
      */
-    private void registerUser() {
+    private void registerUser(){
         // Instanciar elementos del layout
-        EditText emailEditText = findViewById(R.id.emailEditText);
-        EditText passwordEditText = findViewById(R.id.passwordEditText);
-        Button signUpButton = findViewById(R.id.signOutButton);
+        Button signUpButton = findViewById(R.id.registerButton);
 
         // Añadir el listener al botón de registrar
-        signUpButton.setOnClickListener(v -> {
-            // Obtener el valor de los campos EditText de email y contraseña
-            String email = emailEditText.getText().toString().trim();
-            String password = passwordEditText.getText().toString().trim();
-            // Validaciones de los campos de email y contraseña
-            if (email.isEmpty()) {
-                mostrarPopup("Error", "Debe introducir una dirección de email");
-                return;
-            }
-            if (password.isEmpty()) {
-                mostrarPopup("Error", "Debe introducir una contraseña válida");
-                return;
-            }
-            // Verificar que la contraseña tenga un mínimo de 6 caracteres (requisito de Firebase)
-            if (password.length() < 6) {
-                mostrarPopup("Error", "La contraseña debe tener al menos 6 caracteres");
-                // Limpiar el campo de contraseña
-                passwordEditText.setText("");
-                return;
-            }
-
-            // Obtener una instancia de FirebaseAuth y llamar al metodo createUserWithEmailAndPassword para registrar el usuario mediante email y contraseña
-            FirebaseAuth.getInstance()
-                    .createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            // [ REGISTRO EXITOSO ]
-                            // Mostrar mensaje de éxito
-                            //TODO Valorar si cambiar el mensaje por un Toast y navegar a HomeActivity
-                            mostrarPopup("¡Enhorabuena!", "Ha sido registrado correctamente.\nPulse el botón Acceder para navegar al Home.");
-                        } else {
-                            // Si el task no es exitoso, se maneja el error
-                            if (task.getException() != null) {
-                                // Obtener el código de error
-                                FirebaseAuthException e = (FirebaseAuthException) task.getException();
-                                String errorCode = e.getErrorCode();
-
-                                // Personalizar el mensaje de error según el código de error
-                                switch (errorCode) {
-                                    case "ERROR_EMAIL_ALREADY_IN_USE":
-                                        mostrarPopup("Error", "Ya existe un usuario registrado con la dirección de correo electrónico " + email);
-                                        // Limpiar los campos de email y contraseña
-                                        passwordEditText.setText("");
-                                        passwordEditText.setText("");
-                                        break;
-                                    case "ERROR_INVALID_EMAIL":
-                                        mostrarPopup("Error", "El formato del correo electrónico no es válido.");
-                                        // Limpiar los campos de email y contraseña
-                                        emailEditText.setText("");
-                                        passwordEditText.setText("");
-                                        break;
-                                    default:
-                                        mostrarPopup("Error", "Error al registrar usuario. Por favor inténtelo de nuevo.");
-                                        break;
-                                }
-                            }
-                        }
-                    });
-        });
+        // Listener para el botón backButton -> Navega a AuthActivity
+        signUpButton.setOnClickListener(v -> navigateRegister());
     }
 
     /**
-     * Metodo que define la acción al pulsar el botón Acceder.
+     * Define la acción al pulsar el botón Iniciar Sesión.
      * Obtiene y verifica que no estén vacíos los campos email y contraseña.
-     * Mediante el servicio FirebaseAuth, comprueba que el usuario esta registrado y en tal caso accede a la HomeActivity.
+     * Mediante el servicio FirebaseAuth, verifica que el usuario esta registrado y en tal caso accede y navega a la HomeActivity.
      */
     private void signInUser() {
         // Instanciar elementos del layout
@@ -176,16 +114,16 @@ public class AuthActivity extends AppCompatActivity {
 
             // Validaciones de los campos de email y contraseña
             if (email.isEmpty()) {
-                mostrarPopup("Error", "Debe introducir una dirección de email");
+                showPopup("Error", "Debe introducir una dirección de email");
                 return;
             }
             if (password.isEmpty()) {
-                mostrarPopup("Error", "Debe introducir una contraseña válida");
+                showPopup("Error", "Debe introducir una contraseña válida");
                 return;
             }
             // Verificar que la contraseña tenga un mínimo de 6 caracteres (requisito de Firebase)
             if (password.length() < 6) {
-                mostrarPopup("Error", "La contraseña debe tener al menos 6 caracteres");
+                showPopup("Error", "La contraseña debe tener al menos 6 caracteres");
                 // Limpiar el campo de contraseña
                 passwordEditText.setText("");
                 return;
@@ -201,9 +139,9 @@ public class AuthActivity extends AppCompatActivity {
                             // Mostrar mensaje toast
                             Toast.makeText(this, "Ha accedido a la aplicación con éxito", Toast.LENGTH_SHORT).show();
                             // Navegar a HomeActivity
-                            mostrarHome(userEmail);
+                            navigateHome(userEmail);
                         } else {
-                            mostrarPopup("Error", "La dirección de correo electrónico o la contraseña no coinciden con las de un usuario registrado.\nPor favor, inténtelo de nuevo.");
+                            showPopup("Error", "La dirección de correo electrónico o la contraseña no coinciden con las de un usuario registrado.\nPor favor, inténtelo de nuevo.");
                             // Limpiar los campos de email y contraseña
                             emailEditText.setText("");
                             passwordEditText.setText("");
@@ -213,7 +151,7 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     /**
-     * Metodo que envía un correo de recuperación de contraseña si el email es válido.
+     * Envía un correo de recuperación de contraseña si el email es válido.
      * Muestra un mensaje de éxito o error según el resultado.
      */
     private void recoverPassword() {
@@ -229,7 +167,7 @@ public class AuthActivity extends AppCompatActivity {
             // Validar que el email no esté vacío
             if (email.isEmpty()) {
                 // Mostrar un mensaje Toast
-                Toast.makeText(this, "Por favor, introduce tu email", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Por favor, introduce una dirección de correo valida.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -238,12 +176,12 @@ public class AuthActivity extends AppCompatActivity {
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             // Mostrar un mensaje Toast
-                            Toast.makeText(this, "Correo de recuperación enviado.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(this, "Correo de recuperación enviado a la dirección de correo ingresada.", Toast.LENGTH_LONG).show();
                         } else {
                             // Si el task no es exitoso, se maneja el error
                             if (task.getException() != null) {
                                 // Mostrar mensaje de error
-                                mostrarPopup("Error", "La dirección de correo electrónico no es valida.\nPor favor, inténtelo de nuevo.");
+                                showPopup("Error", "La dirección de correo electrónico no es valida.\nPor favor, inténtelo de nuevo.");
                                 // Limpiar los campos de email y contraseña
                                 emailEditText.setText("");
                                 passwordEditText.setText("");
@@ -254,12 +192,12 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     /**
-     * Metodo cuya función es mostrar un mensaje con formato popup y un botón de aceptar para cerrarlo
+     * Muestra un mensaje con formato popup y un botón de aceptar para cerrarlo
      *
      * @param titulo  Titulo que se muestra en el popup
      * @param mensaje Mensaje que se muestra en el popup
      */
-    private void mostrarPopup(String titulo, String mensaje) {
+    private void showPopup(String titulo, String mensaje) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(titulo);
         builder.setMessage(mensaje);
@@ -270,13 +208,21 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     /**
-     * Metodo que crea un Intent para navegar a la HomeActivity y enviar como datos el email
+     * Crea un Intent para navegar a la HomeActivity y enviar como datos el email
      *
-     * @param email    Email del usuario
+     * @param email Email del usuario
      */
-    private void mostrarHome(String email) {
+    private void navigateHome(String email) {
         Intent homeIntent = new Intent(AuthActivity.this, HomeActivity.class);
         homeIntent.putExtra("email", email);
+        startActivity(homeIntent);
+    }
+
+    /**
+     * Crea un Intent para navegar a la RegisterActivity
+     */
+    private void navigateRegister() {
+        Intent homeIntent = new Intent(AuthActivity.this, RegisterActivity.class);
         startActivity(homeIntent);
     }
 }

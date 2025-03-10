@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_01"
-    tools:context=".AuthActivity">
+    tools:context=".RegisterActivity">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -22,33 +22,33 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
             android:contentDescription="Imagen para la pantalla de autentificación"
-            app:srcCompat="@drawable/auth_logo" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="40dp" />
-
-        <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ingrese a su cuenta"
-            android:textColor="@color/blue_02"
-            android:textSize="26sp"
-            android:textStyle="bold" />
+            app:srcCompat="@drawable/welcome_logo" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="30dp" />
 
         <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¡Bienvenido!"
+            android:textColor="@color/blue_02"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <TextView
             android:id="@+id/textView01"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:text="Comience a gestionar sus reservas de PistaPadel facilmente desde su dispositivo.\nPor favor, introduzca sus credenciales o registrese como nuevo usuario."
+            android:text="Para registrarse como nuevo usuario, debe cumplimentar el siguiente formulario."
             android:textSize="16sp" />
 
         <Space
@@ -60,8 +60,8 @@
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:text="Correo elctrónico"
-            android:textSize="16sp"
             android:textColor="@color/blue_02"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <EditText
@@ -82,8 +82,8 @@
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:text="Contraseña"
-            android:textSize="16sp"
             android:textColor="@color/blue_02"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <EditText
@@ -97,34 +97,71 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="10dp" />
+            android:layout_height="20dp" />
 
         <TextView
-            android:id="@+id/passRecoveryTextView"
+            android:id="@+id/nameLabelTextView"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:text="Nombre"
+            android:textColor="@color/blue_02"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/nameEditText"
             android:layout_width="350dp"
             android:layout_height="48dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:text="¿Ha olvidado su contraseña?"
-            android:textAlignment="center"
-            android:textColor="@android:color/holo_blue_dark" />
+            android:ems="10"
+            android:hint="Nombre"
+            android:inputType="textCapWords" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
-        <Button
-            android:id="@+id/signInButton"
+        <TextView
+            android:id="@+id/surnamesLabelTextView"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:text="Apellidos"
+            android:textColor="@color/blue_02"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/surnamesEditText"
             android:layout_width="350dp"
             android:layout_height="48dp"
-            android:layout_weight="1"
-            android:text="Iniciar sesión"
-            app:backgroundTint="@color/blue_01" />
+            android:ems="10"
+            android:hint="Apellidos"
+            android:inputType="textCapWords"/>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="5dp" />
+            android:layout_height="20dp" />
+
+        <TextView
+            android:id="@+id/phoneLabelTextView"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:text="Teléfono"
+            android:textColor="@color/blue_02"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/phoneEditText"
+            android:layout_width="350dp"
+            android:layout_height="48dp"
+            android:autofillHints="phone"
+            android:ems="10"
+            android:hint="666 66 66 66"
+            android:inputType="phone" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
 
         <Button
             android:id="@+id/registerButton"
@@ -132,7 +169,19 @@
             android:layout_height="48dp"
             android:layout_weight="1"
             android:text="Registrarse"
-            app:backgroundTint="@color/green_01" />
+            app:backgroundTint="@color/blue_01" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="5dp" />
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="350dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Volver"
+            app:backgroundTint="@color/red_01" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

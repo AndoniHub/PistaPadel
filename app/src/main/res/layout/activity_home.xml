@@ -54,7 +54,7 @@
             android:layout_height="8dp" />
 
         <EditText
-            android:id="@+id/surNameEditTextView"
+            android:id="@+id/surnamesEditTextView"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:hint="Apellidos" />
